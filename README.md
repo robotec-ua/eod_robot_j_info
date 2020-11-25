@@ -28,7 +28,7 @@ The EOD robot system is in service with military and law enforcement units of mo
     * [Starting the robot](https://github.com/robotec-ua/demine_robot_h_launch)
 
 ## Overview
-
+The robot is designed toprovide enhanced bomb disposal capabilities to EOD teams. Model J offers high reliability and excellent maneuverability. It can be used to identify and disarm booby traps,  fireworks,  improvised, explosive  devices  and  other  dangerous  objects  in  closed  areas,  buildings  and vehicles. The robot also performs reconnaissance, monitoring and investigation of objects in exceptionally dangerous conditions
 
 ## State of art technologies
 A robot can't be created without advance in technologies.
@@ -37,6 +37,9 @@ A robot can't be created without advance in technologies.
 Success of a robot depends on hardware and software in equal ratio : high-quality hardware can't show the best performace without a well-planned, structured and fast software nor good software can be used properly on outdated hardware. So, the team of software engineers in Robotec did their best to create a powerful, simple and scalable software to bring evolution in the world of robotics. 
 
 #### Navigation
+##### Packages
+* [robot_localization](http://wiki.ros.org/robot_localization)
+
 Precise navigation is one of the most difficult problems to solve in robotics. There are a lot of different types of navigation and they can achieve different levels of precise movement. The robot is dedicated to complete dangerous tasks, so precision of the robot movements are critical. 
 
 Having that in mind, it was decided that Model J will be equipped with high-precision encoders (tracking position of the robot "on the spot") and modern GPS antenae (to use it with GNSS RTK packages, which is advanced satelite-based technology of highly-accurate navigation).
@@ -44,11 +47,19 @@ Having that in mind, it was decided that Model J will be equipped with high-prec
 All the data are fuzed with EKF ([Extended Kalman Filter](https://en.wikipedia.org/wiki/Kalman_filter)), which is dedicated to get and predict inertial system state using noisy or inaccurate data from different sources (GPS and encoders mentioned above). This solution tends to be a lot more accurate than estimation on every of the data separately and is commonly-used in robotics. 
 
 #### Motion
+##### Packages
+* [move_basic](https://github.com/UbiquityRobotics/move_basic)
+* [robotec_move_basic](https://github.com/robotec-ua/robotec_move_basic)
+
 Robots have to do complete different types of tasks and a lot of them require very high precission (in comparison with capabilities of a mere human) and siplicity. Model J has to move itself in spece precisely and predictable, correct itself during "journeys". There are a lot of packages to achieve that goal, but almost all of them required complicated planning and a lot of computing power. Because of that, Robotec used open-source package [move_basic](https://github.com/UbiquityRobotics/move_basic) in their robots. Such choice has a lot of benefits : the package is quite simple yet powerful, it can create a simple trajectory (much less errors while moving),has a reliable and fast obstacle detection system. 
 
 Robotec became a contributor to the package and based [their own](https://github.com/robotec-ua/robotec_move_basic) on it. Now, a good package's become great.
 
 #### Neural Networks
+##### Packages
+* [robotec_image_filtering](https://github.com/robotec-ua/robotec_image_filtering)
+* [robotec_mrcnn](https://github.com/robotec-ua/robotec_mrcnn)
+
 Object detection is not a trivial task for computers, so our robot uses powerful computation module Nvidia Jetson Nano (created for AI appliance), a set of cameras and cutting-edge technology Mask-RCNN to detect mines with accuracy up to 90% on a real-time video. It can detect mines even in motion (2 m/s or 4.47 mph).
 
 The detection module consist of two different parts :
@@ -62,6 +73,9 @@ After filtering, the detection process kicks in. In order to train the network, 
 Because Mask-RCNN package is a standalone project, imcompatible with our main system, Robotec started the development of a new reliable package, that could be "a man in the middle" between the fast NN technology and Robotec software. As a result, [object detection package](https://github.com/robotec-ua/robotec_mrcnn) was built : widely-applicable highly-configurable and open-source package will be community-driven and always up-to-date.
 
 #### System of Sensors
+##### Packages
+* [robotec_sensor_processing](https://github.com/robotec-ua/robotec_sensor_processing)
+
 Nowadays robots can be smart enough to make decisions on their own : where to stop, which of details to get etc. Such a technology couldn't be possible without variety of sensors (analogue to human's senses). And Robotec uses a lot of sensors in their robots to make every possible work done precisely as planned.
 
 To get data from the robot's sensors, specialists in Robotec developed a reliable ROS [package](https://github.com/robotec-ua/robotec_sensor_processing), which can be used to communicate with other devices using variety of protocols (can be easily implemented). The technology is based on using a standalone board powered with STM32 microcontroller, which is connected to every sensor present in the system, reads their state and sends data to the main board using a simple yet reliable protocol (designed especially for appliance in Robotec robots). 
